@@ -1,5 +1,5 @@
 //Create a new component. This component should produce some HTML
-
+import _ from "lodash";
 import React, {Component} from 'react';
 import ReactDOM from "react-dom";
 import YTSearch from 'youtube-api-search';
@@ -17,17 +17,20 @@ class App extends Component{
 
         this.state = {videos: [] , selectedVideo: null};
 
-        YTSearch({key:API_KEY_YOUTUBE, term: ""}, (videos) => {
-            this.setState({videos : videos, selectedVideo: videos[0]}); // {videos : videos} //ES6
-        });
-
+        this.videoSearch("dinamo");
     }
 
-
+    videoSearch(search){
+        console.log("search = ",search);
+        YTSearch({key:API_KEY_YOUTUBE, term: search}, (videos) => {
+            this.setState({videos : videos, selectedVideo: videos[0]}); // {videos : videos} //ES6
+        });
+    }
 
     render (){
+        const videoSearch = _.debounce((search) => {this.videoSearch(search)}, 500)
         return <div>
-        <SearchBar/>
+        <SearchBar onSearchTextChanged = {videoSearch}/>
         <VideoDetail video = {this.state.selectedVideo}/>
         <VideoList
             onVideoSelect={selectedVideo => this.setState({selectedVideo})}
