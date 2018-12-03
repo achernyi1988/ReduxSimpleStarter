@@ -10,8 +10,8 @@ class SearchBar extends React.Component {
 
         render(){
             return (
-          <div className="search-bar">
-            <input
+          <div className="search-bar" >
+            <input id="youtube"
                 value = {this.state.input}
                 onChange = {event => this.onInputChanged(event.target.value)}/>
           </div>
